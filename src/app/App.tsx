@@ -1,19 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Flex } from './typograhpy/flex';
-import { media } from '../style/media-query';
+import { Map } from './components/map/map';
 
-function App() {
-  return <Box />;
+export function App() {
+  return <Map />;
 }
-
-export default App;
-
-const Box = styled(Flex)`
-  width: 100px;
-  height: 100px;
-  background: blue;
-  ${media.mobile`
-    background: red;
-  `}
-`;
