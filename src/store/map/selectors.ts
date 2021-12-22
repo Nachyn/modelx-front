@@ -6,8 +6,6 @@ const selectState = createSelector(
   state => state.map
 );
 
-export const selectMap = createSelector(selectState, state => state.map);
-
 export const selectLatitude = createSelector(
   selectState,
   state => state.latitude

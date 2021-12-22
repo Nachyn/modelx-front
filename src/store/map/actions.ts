@@ -16,3 +16,7 @@ export const initializeMap = createPayloadAction<{
 }>('initializeMap');
 
 export const addModel = createPayloadAction<MapModel>('addModel');
+
+export const removeModel = createPayloadAction<{
+  id: string;
+}>('removeModel');

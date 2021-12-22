@@ -3,19 +3,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import * as actions from './actions';
 import { defaultMapValues } from '../../consts/map';
 import { createCustomLayer } from '../../mapboxgl/create-custom-layer';
+import { MapModel } from './models/map-model';
+
+let MAP: Map | null = null;
 
 export interface MapState {
-  map: Map | null;
   latitude: number;
   longitude: number;
   zoom: number;
+  models: MapModel[];
 }
 
 const initialState: MapState = {
-  map: null,
   latitude: 0,
   longitude: 0,
-  zoom: 10
+  zoom: 10,
+  models: []
 };
 
 export const mapSlice = createSlice({
@@ -26,28 +29,48 @@ export const mapSlice = createSlice({
     builder
       .addCase(actions.initializeMap, (state, { payload }) => {
         const { mapContainer, latitude, longitude, zoom } = payload;
+        MAP = new mapboxgl.Map({
+          container: mapContainer,
+          center: [longitude, latitude],
+          zoom,
+          style: defaultMapValues.style,
+          antialias: defaultMapValues.antialias,
+          pitch: defaultMapValues.pitch
+        });
         return {
           latitude,
           longitude,
           zoom,
-          map: new mapboxgl.Map({
-            container: mapContainer,
-            center: [longitude, latitude],
-            zoom,
-            style: defaultMapValues.style,
-            antialias: defaultMapValues.antialias,
-            pitch: defaultMapValues.pitch
-          })
+          models: []
         };
       })
       .addCase(actions.addModel, (state, { payload }) => {
-        if (!state.map) {
+        if (!MAP || state.models.find(m => m.id === payload.id)) {
           return;
         }
+
         const customLayer = createCustomLayer(payload);
-        state.map.addLayer(customLayer, 'waterway-label');
+        MAP.addLayer(customLayer, 'waterway-label');
+
         return {
-          ...state
+          ...state,
+          models: [...state.models, payload]
+        };
+      })
+      .addCase(actions.removeModel, (state, { payload }) => {
+        if (!MAP) {
+          return;
+        }
+
+        const model = state.models.find(m => m.id === payload.id);
+        if (!model) {
+          return;
+        }
+
+        MAP.removeLayer(model.id);
+        return {
+          ...state,
+          models: state.models.filter(m => m.id !== model.id)
         };
       });
   }

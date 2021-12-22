@@ -17,9 +17,13 @@ export function App() {
       })
     );
   };
+
+  const handleButton2 = () => {
+    dispatch(mapActions.removeModel({ id: '1' }));
+  };
   return (
     <AppComponent>
-      <HelpButton2></HelpButton2>
+      <HelpButton2 onClick={() => handleButton2()} />
       <HelpButton onClick={() => handleButton()} />
       <Map />
     </AppComponent>
