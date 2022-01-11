@@ -23,7 +23,7 @@ export const createCustomLayer = (
     modelAltitude
   );
 
-  // transformation parameters to position, rotate and scale the 3D model onto the map
+  // transformation parameters to position, rotate and scale the 3D model onto the Map
   const modelTransform = {
     translateX: modelAsMercatorCoordinate.x,
     translateY: modelAsMercatorCoordinate.y,
@@ -61,7 +61,7 @@ export const createCustomLayer = (
       });
       this.map = map;
 
-      // use the Mapbox GL JS map canvas for three.js
+      // use the Mapbox GL JS Map canvas for three.js
       this.renderer = new THREE.WebGLRenderer({
         canvas: map.getCanvas(),
         context: gl,
