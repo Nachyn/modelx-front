@@ -6,6 +6,7 @@ import { Lobby } from './pages/Lobby/Lobby';
 import { Login } from './pages/Login/Login';
 import { PageRoutes } from './consts/routes';
 import { GuardedRoute } from './components/GuardedRoute/GuardedRoute';
+import { Register } from './pages/Register/Register';
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
           <Route path={PageRoutes.lobby} element={<Lobby />} />
         </Route>
         <Route path={PageRoutes.login} element={<Login />} />
+        <Route path={PageRoutes.register} element={<Register />} />
       </Routes>
       <Map />
     </AppComponent>

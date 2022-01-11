@@ -1,4 +1,5 @@
 export const PageRoutes = {
   lobby: '/',
-  login: '/Login'
+  login: '/login',
+  register: '/register'
 };

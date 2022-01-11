@@ -8,14 +8,15 @@ import './mapboxgl/mapboxgl-settings';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import 'antd/dist/antd.css';
-import { BrowserRouter } from 'react-router-dom';
+import { CustomRouter } from './app/components/CustomRouter/CustomRouter';
+import { history } from './history';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <CustomRouter history={history}>
         <App />
-      </BrowserRouter>
+      </CustomRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

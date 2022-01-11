@@ -1,4 +1,6 @@
 import { combineEpics } from 'redux-observable';
 import { mapEpics } from './map/epics';
+import { userEpics } from './user/epics';
 
-export const rootEpic = combineEpics(mapEpics);
+// @ts-ignore
+export const rootEpic = combineEpics(mapEpics, userEpics);

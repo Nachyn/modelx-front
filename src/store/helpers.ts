@@ -1,4 +1,5 @@
-import { createAction } from '@reduxjs/toolkit';
+import { Action, createAction, PayloadAction } from '@reduxjs/toolkit';
+import { Epic } from 'redux-observable';
 
 function createActionName(storeName: string, actionName: string) {
   return `${storeName}/${actionName}`;
@@ -15,3 +16,6 @@ export function getCreateActionFromStore(storeName: string) {
     return createAction(createActionName(storeName, actionName));
   };
 }
+
+export type PayloadEpic<T> = Epic<PayloadAction<T>, any, void, T>;
+export type SimpleEpic = Epic<Action, Action, void>;

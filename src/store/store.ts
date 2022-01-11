@@ -10,6 +10,7 @@ export const store = configureStore({
   middleware: [epicMiddleware]
 });
 
+// @ts-ignore
 epicMiddleware.run(rootEpic);
 
 export type RootState = ReturnType<typeof store.getState>;
