@@ -7,11 +7,15 @@ import 'reset-css';
 import './mapboxgl/mapboxgl-settings';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import 'antd/dist/antd.css';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

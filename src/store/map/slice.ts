@@ -1,7 +1,7 @@
 import mapboxgl, { Map } from 'mapbox-gl';
 import { createSlice } from '@reduxjs/toolkit';
 import * as actions from './actions';
-import { defaultMapValues } from '../../consts/map';
+import { defaultMapValues } from '../../app/consts/map';
 import { createCustomLayer } from '../../mapboxgl/create-custom-layer';
 import { MapModel } from './models/map-model';
 

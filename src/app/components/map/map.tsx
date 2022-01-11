@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import styled, { StyledComponent } from 'styled-components';
 import * as mapActions from '../../../store/map/actions';
 import { useDispatch } from 'react-redux';
-import { defaultMapValues } from '../../../consts/map';
+import { defaultMapValues } from '../../consts/map';
+import { ZIndex } from '../../consts/z-index';
 
 export function Map() {
   const dispatch = useDispatch();
@@ -29,5 +30,10 @@ export function Map() {
 }
 
 const Mapbox = styled.div`
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: ${ZIndex.Map};
 ` as StyledComponent<any, HTMLDivElement>;
