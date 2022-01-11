@@ -4,14 +4,16 @@ import { LocalStorageKeys } from '../../consts/local-storage-keys';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { notification } from 'antd';
+import { history } from '../../../history';
+import { PageRoutes } from '../../consts/routes';
 
 const instance = axios.create({
   baseURL: 'https://localhost:5500/api'
 });
 
 instance.interceptors.request.use(config => {
-  config.headers!['Authorization'] =
-    'Bearer ' + LocalStorageService.getItem(LocalStorageKeys.Token);
+  const token = LocalStorageService.getItem(LocalStorageKeys.Token);
+  config.headers!['Authorization'] = 'Bearer ' + token;
   return config;
 });
 
@@ -20,15 +22,18 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
-    if ([400, 404].includes(error.response.status)) {
-      const description = Array.isArray(error.response.data)
-        ? error.response.data.join(' ')
-        : error.response.data;
+    const status = error.response.status;
+    const data = error.response.data;
+
+    if ([400, 404].includes(status)) {
+      const description = Array.isArray(data) ? data.join(' ') : data;
 
       notification.info({
         message: 'Error',
         description
       });
+    } else if ([401, 403].includes(status)) {
+      history.push(PageRoutes.login);
     } else {
       notification.error({
         message: 'Error',
