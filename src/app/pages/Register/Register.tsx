@@ -1,17 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CenteredRowFlex } from '../../typograhpy/flex';
+import { CenteredRowFlex, ColumnFlex } from '../../typograhpy/flex';
 import { ZIndex } from '../../consts/z-index';
 import { Button, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { RegisterInfo } from '../../../store/user/models/register-info';
 import * as userActions from '../../../store/user/actions';
+import { useNavigate } from 'react-router-dom';
+import { PageRoutes } from '../../consts/routes';
 
 export function Register() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onFinish = (values: RegisterInfo) => {
     dispatch(userActions.register(values));
+  };
+  const goToLogin = () => {
+    navigate(PageRoutes.login);
   };
 
   return (
@@ -48,18 +54,21 @@ export function Register() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Buttons>
           <Button type="primary" htmlType="submit">
             Register now
           </Button>
-        </Form.Item>
+          <LoginButton type="ghost" onClick={goToLogin}>
+            Back to login
+          </LoginButton>
+        </Buttons>
       </Form>
     </RegisterComponent>
   );
 }
 
-const RegisterComponent = styled(CenteredRowFlex)`
-  padding: 25px 20px 0 5px;
+export const RegisterComponent = styled(CenteredRowFlex)`
+  padding: 20px;
   position: absolute;
   z-index: ${ZIndex.Register};
   top: 24px;
@@ -71,3 +80,9 @@ const RegisterComponent = styled(CenteredRowFlex)`
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
     0 9px 28px 8px rgb(0 0 0 / 5%);
 `;
+
+const LoginButton = styled(Button)`
+  margin-top: 10px;
+`;
+
+const Buttons = styled(ColumnFlex)``;

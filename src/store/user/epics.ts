@@ -7,6 +7,10 @@ import { map } from 'rxjs/operators';
 import { UserService } from '../../app/services/user-service/user-service';
 import { PageRoutes } from '../../app/consts/routes';
 import { history } from '../../history';
+import { LoginInfo } from './models/login-info';
+import { LocalStorageService } from '../../app/services/local-storage/local-storage-service';
+import { LocalStorageKeys } from '../../app/consts/local-storage-keys';
+import { AuthInfo } from './models/auth-info';
 
 const registerEpic$: PayloadEpic<RegisterInfo> = actions$ =>
   actions$.pipe(
@@ -27,4 +31,31 @@ const registerSuccessEpic$: SimpleEpic = actions$ =>
     concatMap(() => EMPTY)
   );
 
-export const userEpics = combineEpics(registerEpic$, registerSuccessEpic$);
+const loginEpic$: PayloadEpic<LoginInfo> = actions$ =>
+  actions$.pipe(
+    ofType(actions.login.type),
+    map(x => x.payload),
+    switchMap(info =>
+      UserService.login(info).pipe(
+        map(info => actions.loginSuccess(info)),
+        catchError(error => [actions.loginFailure(error)])
+      )
+    )
+  );
+
+const loginSuccessEpic$: PayloadEpic<AuthInfo> = actions$ =>
+  actions$.pipe(
+    ofType(actions.loginSuccess.type),
+    tap(({ payload }) => {
+      LocalStorageService.setItem(LocalStorageKeys.Token, payload.token);
+      history.push(PageRoutes.lobby);
+    }),
+    concatMap(() => EMPTY)
+  );
+
+export const userEpics = combineEpics<any>(
+  registerEpic$,
+  registerSuccessEpic$,
+  loginEpic$,
+  loginSuccessEpic$
+);

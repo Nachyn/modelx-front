@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import * as actions from './actions';
 
 export interface UserState {
   id: number;
@@ -18,7 +19,16 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
-  extraReducers: builder => {}
+  extraReducers: builder => {
+    builder.addCase(actions.loginSuccess, (_, { payload }) => {
+      return {
+        id: payload.userId,
+        username: payload.username,
+        roles: payload.roles,
+        email: payload.email
+      };
+    });
+  }
 });
 
 export default userSlice.reducer;
