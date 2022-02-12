@@ -4,4 +4,5 @@ export interface MapModel {
   longitude: number;
   //.glb or .gltf
   glbModelUrl: string;
+  name: string;
 }

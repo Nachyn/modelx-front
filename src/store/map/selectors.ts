@@ -17,3 +17,5 @@ export const selectLongitude = createSelector(
 );
 
 export const selectZoom = createSelector(selectState, state => state.zoom);
+
+export const selectModels = createSelector(selectState, state => state.models);

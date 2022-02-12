@@ -2,13 +2,19 @@ import { createEpicMiddleware } from 'redux-observable';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootEpic } from './root-epic';
 import { rootReducer } from './root-reducer';
-import { addInitializeMapSuccessEventListener } from './events';
-import { initializeMapSuccess } from './map/actions';
+import * as mapEvents from './map/events';
+import * as mapActions from './map/actions';
 
 const epicMiddleware = createEpicMiddleware();
 
-addInitializeMapSuccessEventListener(() => {
-  store!.dispatch(initializeMapSuccess());
+mapEvents.addInitializeMapSuccessEventListener(() => {
+  store!.dispatch(mapActions.initializeMapSuccess());
+});
+mapEvents.addZoomMapEventListener(zoom => {
+  store!.dispatch(mapActions.setZoom(zoom));
+});
+mapEvents.addLngLatEventListener(props => {
+  store!.dispatch(mapActions.setLngLat(props));
 });
 
 export const store = configureStore({

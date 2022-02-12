@@ -4,7 +4,7 @@ import * as actions from './actions';
 import { defaultMapValues } from '../../app/consts/map';
 import { createCustomLayer } from '../../mapboxgl/create-custom-layer';
 import { MapModel } from './models/map-model';
-import { dispatchInitializeMapSuccessEvent } from '../events';
+import * as events from './events';
 
 let MAP: Map | null = null;
 
@@ -38,7 +38,11 @@ export const mapSlice = createSlice({
           antialias: defaultMapValues.antialias,
           pitch: defaultMapValues.pitch
         });
-        MAP.on('style.load', dispatchInitializeMapSuccessEvent);
+        MAP.on('style.load', events.dispatchInitializeMapSuccessEvent);
+        MAP.on('zoom', () => {
+          events.dispatchZoomMapEvent(MAP!.getZoom());
+        });
+        MAP.on('click', e => events.dispatchLngLatEvent(e.lngLat));
 
         return {
           latitude,
@@ -74,6 +78,19 @@ export const mapSlice = createSlice({
         return {
           ...state,
           models: state.models.filter(m => m.id !== model.id)
+        };
+      })
+      .addCase(actions.setZoomSuccess, (state, { payload }) => {
+        return {
+          ...state,
+          zoom: payload
+        };
+      })
+      .addCase(actions.setLngLat, (state, { payload }) => {
+        return {
+          ...state,
+          longitude: payload.lng,
+          latitude: payload.lat
         };
       });
   }

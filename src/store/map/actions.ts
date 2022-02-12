@@ -24,3 +24,9 @@ export const addModel = createPayloadAction<MapModel>('addModel');
 export const removeModel = createPayloadAction<{
   id: string;
 }>('removeModel');
+
+export const setZoom = createPayloadAction<number>('setZoom');
+export const setZoomSuccess = createPayloadAction<number>('setZoomSuccess');
+
+export const setLngLat =
+  createPayloadAction<{ lng: number; lat: number }>('setLngLat');
