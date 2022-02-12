@@ -14,6 +14,10 @@ export const initializeMap = createPayloadAction<{
   longitude: number;
   zoom: number;
 }>('initializeMap');
+export const initializeMapSuccess = createAction('initializeMapSuccess');
+
+export const loadModels = createAction('loadModels');
+export const loadModelsFailure = createPayloadAction<any>('loadModelsFailure');
 
 export const addModel = createPayloadAction<MapModel>('addModel');
 

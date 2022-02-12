@@ -48,6 +48,10 @@ class HttpServiceImpl {
   post<T>(url: string, data: any): Observable<T> {
     return from(instance.post<T>(url, data)).pipe(map(x => x.data));
   }
+
+  get<T>(url: string): Observable<T> {
+    return from(instance.get<T>(url)).pipe(map(x => x.data));
+  }
 }
 
 export const HttpService = new HttpServiceImpl();

@@ -1,7 +1,7 @@
 export const defaultMapValues = {
-  zoom: 16,
-  latitude: 38.889483,
-  longitude: -77.03572,
+  zoom: 18,
+  latitude: 51.724855,
+  longitude: 94.44365,
   containerRef: '',
   style: 'mapbox://styles/mapbox/outdoors-v11',
   pitch: 40,

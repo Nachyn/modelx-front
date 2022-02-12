@@ -4,6 +4,7 @@ import * as actions from './actions';
 import { defaultMapValues } from '../../app/consts/map';
 import { createCustomLayer } from '../../mapboxgl/create-custom-layer';
 import { MapModel } from './models/map-model';
+import { dispatchInitializeMapSuccessEvent } from '../events';
 
 let MAP: Map | null = null;
 
@@ -37,6 +38,8 @@ export const mapSlice = createSlice({
           antialias: defaultMapValues.antialias,
           pitch: defaultMapValues.pitch
         });
+        MAP.on('style.load', dispatchInitializeMapSuccessEvent);
+
         return {
           latitude,
           longitude,
