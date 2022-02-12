@@ -71,10 +71,10 @@ export const RegisterComponent = styled(CenteredRowFlex)`
   padding: 10px;
   position: absolute;
   z-index: ${ZIndex.Register};
-  top: 20px;
+  top: 50%;
   left: 50%;
   background: white;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-50%);
 
   border-radius: 2px;
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),

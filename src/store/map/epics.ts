@@ -3,7 +3,8 @@ import * as actions from './actions';
 import { catchError, concatMap, debounceTime, switchMap } from 'rxjs';
 import { ModelService } from '../../app/services/model-service/model-service';
 import { map } from 'rxjs/operators';
-import { PayloadEpic, SimpleEpic } from '../helpers';
+import { PayloadEpic, SimpleEpic, StatePayloadEpic } from '../helpers';
+import { RootState } from '../store';
 
 const loadModelsEpic$: SimpleEpic = actions$ =>
   actions$.pipe(
@@ -29,8 +30,37 @@ const setZoomEpic$: PayloadEpic<number> = actions$ =>
     map(({ payload }) => actions.setZoomSuccess(payload))
   );
 
+const uploadModelEpic$: StatePayloadEpic<File, RootState> = (
+  actions$,
+  state$
+) =>
+  actions$.pipe(
+    ofType(actions.uploadModel.type),
+    switchMap(({ payload }) => {
+      return ModelService.uploadAttachment(payload).pipe(
+        switchMap(id =>
+          ModelService.putModels({
+            models: [
+              {
+                attachmentId: id,
+                latitude: state$.value.map.latitude,
+                longitude: state$.value.map.longitude
+              }
+            ]
+          }).pipe(
+            map(() => actions.uploadModelSuccess()),
+            catchError(error => [actions.uploadModelFailure(error)])
+          )
+        ),
+        catchError(error => [actions.uploadModelFailure(error)])
+      );
+    })
+  );
+
 export const mapEpics = combineEpics(
   loadModelsEpic$,
   initializeMapEpic$,
-  setZoomEpic$
+  setZoomEpic$,
+  // @ts-ignore
+  uploadModelEpic$
 );

@@ -4,18 +4,18 @@ import { ZIndex } from '../../consts/z-index';
 import { Divider, List } from 'antd';
 import * as mapSelectors from '../../../store/map/selectors';
 import { useSelector } from 'react-redux';
+import { UploadModel } from './components/UploadModel/UploadModel';
 
 export function Lobby() {
   const [isOpen, setIsOpen] = useState(true);
   const models = useSelector(mapSelectors.selectModels);
   const zoom = useSelector(mapSelectors.selectZoom);
-  const latitude = useSelector(mapSelectors.selectLatitude);
-  const longitude = useSelector(mapSelectors.selectLongitude);
+  const { lng, lat } = useSelector(mapSelectors.selectLngLat);
 
   const settings = [
     <div>Zoom: {zoom.toFixed(2)}</div>,
-    <div>Longitude: {longitude.toFixed(6)}</div>,
-    <div>Latitude: {latitude.toFixed(6)}</div>
+    <div>Longitude: {lng.toFixed(6)}</div>,
+    <div>Latitude: {lat.toFixed(6)}</div>
   ];
 
   return isOpen ? (
@@ -28,10 +28,10 @@ export function Lobby() {
       />
       <Divider orientation="left">Models</Divider>
       <List
-        footer={<ListAction>Add model</ListAction>}
+        footer={<UploadModel />}
         bordered
         dataSource={models}
-        renderItem={model => <List.Item>{model.name}</List.Item>}
+        renderItem={model => <List.Item key={model.id}>{model.name}</List.Item>}
       />
     </LobbyComponent>
   ) : (
@@ -59,8 +59,4 @@ const HiddenLobbyComponent = styled(LobbyComponent)`
   width: 50px;
   height: 50px;
   cursor: pointer;
-`;
-
-const ListAction = styled.div`
-  font-weight: 500;
 `;

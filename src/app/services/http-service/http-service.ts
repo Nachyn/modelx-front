@@ -49,8 +49,20 @@ class HttpServiceImpl {
     return from(instance.post<T>(url, data)).pipe(map(x => x.data));
   }
 
+  put<T>(url: string, data: any): Observable<T> {
+    return from(instance.put<T>(url, data)).pipe(map(x => x.data));
+  }
+
   get<T>(url: string): Observable<T> {
     return from(instance.get<T>(url)).pipe(map(x => x.data));
+  }
+
+  postFormData<T>(url: string, formData: FormData): Observable<T> {
+    return from(
+      instance.post(url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+    ).pipe(map(x => x.data));
   }
 }
 

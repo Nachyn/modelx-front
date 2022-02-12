@@ -18,4 +18,5 @@ export function getCreateActionFromStore(storeName: string) {
 }
 
 export type PayloadEpic<T> = Epic<PayloadAction<T>, any, void, T>;
+export type StatePayloadEpic<T, S> = Epic<PayloadAction<T>, any, S, T>;
 export type SimpleEpic = Epic<Action, Action, void>;

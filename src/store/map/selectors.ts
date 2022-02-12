@@ -6,15 +6,10 @@ const selectState = createSelector(
   state => state.map
 );
 
-export const selectLatitude = createSelector(
-  selectState,
-  state => state.latitude
-);
-
-export const selectLongitude = createSelector(
-  selectState,
-  state => state.longitude
-);
+export const selectLngLat = createSelector(selectState, state => ({
+  lng: state.longitude,
+  lat: state.latitude
+}));
 
 export const selectZoom = createSelector(selectState, state => state.zoom);
 

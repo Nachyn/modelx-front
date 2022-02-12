@@ -30,3 +30,8 @@ export const setZoomSuccess = createPayloadAction<number>('setZoomSuccess');
 
 export const setLngLat =
   createPayloadAction<{ lng: number; lat: number }>('setLngLat');
+
+export const uploadModel = createPayloadAction<File>('uploadModel');
+export const uploadModelSuccess = createAction('uploadModelSuccess');
+export const uploadModelFailure =
+  createPayloadAction<any>('uploadModelFailure');
