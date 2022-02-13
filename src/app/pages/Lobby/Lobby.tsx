@@ -28,7 +28,7 @@ export function Lobby() {
       />
       <Divider orientation="left">Models</Divider>
       <List
-        footer={<UploadModel />}
+        header={<UploadModel />}
         bordered
         dataSource={models}
         renderItem={model => <List.Item key={model.id}>{model.name}</List.Item>}

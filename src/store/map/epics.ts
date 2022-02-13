@@ -48,7 +48,7 @@ const uploadModelEpic$: StatePayloadEpic<File, RootState> = (
               }
             ]
           }).pipe(
-            map(() => actions.uploadModelSuccess()),
+            map(() => actions.uploadModelSuccess({ newModelId: id })),
             catchError(error => [actions.uploadModelFailure(error)])
           )
         ),
@@ -57,10 +57,22 @@ const uploadModelEpic$: StatePayloadEpic<File, RootState> = (
     })
   );
 
+const uploadModelSuccessEpic$: PayloadEpic<{ newModelId: number }> = actions$ =>
+  actions$.pipe(
+    ofType(actions.uploadModelSuccess.type),
+    switchMap(({ payload }) =>
+      ModelService.getModel(payload.newModelId).pipe(
+        map(newModel => actions.addModel(newModel)),
+        catchError(error => [actions.uploadModelFailure(error)])
+      )
+    )
+  );
+
 export const mapEpics = combineEpics(
   loadModelsEpic$,
   initializeMapEpic$,
   setZoomEpic$,
   // @ts-ignore
-  uploadModelEpic$
+  uploadModelEpic$,
+  uploadModelSuccessEpic$
 );

@@ -32,6 +32,7 @@ export const setLngLat =
   createPayloadAction<{ lng: number; lat: number }>('setLngLat');
 
 export const uploadModel = createPayloadAction<File>('uploadModel');
-export const uploadModelSuccess = createAction('uploadModelSuccess');
+export const uploadModelSuccess =
+  createPayloadAction<{ newModelId: number }>('uploadModelSuccess');
 export const uploadModelFailure =
   createPayloadAction<any>('uploadModelFailure');

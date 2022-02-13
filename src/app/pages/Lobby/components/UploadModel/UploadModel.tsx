@@ -9,7 +9,9 @@ export function UploadModel() {
 
   const handleFileSelect = (event: ChangeEvent) => {
     const file = (event.target as HTMLInputElement)!.files![0];
-    dispatch(mapActions.uploadModel(file));
+    if (file) {
+      dispatch(mapActions.uploadModel(file));
+    }
   };
 
   return (

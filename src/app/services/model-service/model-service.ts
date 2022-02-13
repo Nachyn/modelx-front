@@ -10,6 +10,10 @@ class ModelServiceImpl {
     return HttpService.get<MapModel[]>('models');
   }
 
+  getModel(id: number): Observable<MapModel> {
+    return HttpService.get<MapModel>(`models/${id}`);
+  }
+
   uploadAttachment(file: File): Observable<number> {
     const formData = new FormData();
     formData.append(
