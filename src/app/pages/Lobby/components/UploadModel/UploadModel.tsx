@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import * as mapActions from '../../../../../store/map/actions';
+import { AimOutlined } from '@ant-design/icons';
 
 export function UploadModel() {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export function UploadModel() {
         />
       </Hidden>
       <UploadModelComponent onClick={() => inputFileRef.current?.click()}>
-        Add model to selected Lng / Lat
+        <AddIcon /> Add model
       </UploadModelComponent>
     </>
   );
@@ -35,8 +36,15 @@ export function UploadModel() {
 const UploadModelComponent = styled.div`
   cursor: pointer;
   font-weight: 500;
+  display: flex;
+  align-items: center;
 `;
 
 const Hidden = styled.div`
   display: none;
+`;
+
+const AddIcon = styled(AimOutlined)`
+  font-size: 16px;
+  margin-right: 5px;
 `;

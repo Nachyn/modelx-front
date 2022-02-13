@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
 import { Models } from './components/Models/Models.';
 import { MapModel } from '../../../store/map/models/map-model';
+import { CodeOutlined, CompressOutlined } from '@ant-design/icons';
+import { media } from '../../../style/media-query';
 
 export function Lobby() {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ export function Lobby() {
   const [deleteModel, setDeleteModel] = useState<MapModel | null>(null);
 
   return isOpen ? (
-    <LobbyComponent onClick={() => setIsOpen(true)}>
+    <LobbyComponent>
       <ConfirmModal
         title="Delete"
         visible={!!deleteModel}
@@ -45,6 +47,11 @@ export function Lobby() {
       <Divider orientation="left">Map</Divider>
       <List
         bordered
+        footer={
+          <HideButton onClick={() => setIsOpen(false)}>
+            <HideIcon /> Hide settings
+          </HideButton>
+        }
         dataSource={settings}
         renderItem={setting => <List.Item>{setting}</List.Item>}
       />
@@ -52,7 +59,9 @@ export function Lobby() {
       <Models onDelete={setDeleteModel} />
     </LobbyComponent>
   ) : (
-    <HiddenLobbyComponent onClick={() => setIsOpen(true)} />
+    <HiddenLobbyComponent onClick={() => setIsOpen(true)}>
+      <CodeOutlined />
+    </HiddenLobbyComponent>
   );
 }
 
@@ -70,14 +79,38 @@ const LobbyComponent = styled.div`
   max-height: calc(100vh - 40px);
   overflow: hidden;
   overflow-y: auto;
+
+  ${media.mini`
+    width: 280px;
+  `}
 `;
 
 const HiddenLobbyComponent = styled(LobbyComponent)`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  overflow: hidden;
 `;
 
 const ConfirmModal = styled(Modal)`
   width: 300px !important;
+
+  ${media.mini`
+    width: 280px !important;
+  `}
+`;
+
+const HideIcon = styled(CompressOutlined)`
+  font-size: 16px;
+  margin-right: 4px;
+`;
+
+const HideButton = styled.div`
+  cursor: pointer;
+  font-weight: 500;
 `;

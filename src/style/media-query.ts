@@ -4,7 +4,7 @@ import { sizes } from './media-hook';
 export const media = (Object.keys(sizes) as (keyof typeof sizes)[]).reduce(
   (acc, label) => {
     acc[label] = (first: any, ...interpolations: any[]) => css`
-      @media (min-width: ${sizes[label]}px) {
+      @media (max-width: ${sizes[label]}px) {
         ${css(first, ...interpolations)}
       }
     `;
