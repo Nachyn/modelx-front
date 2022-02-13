@@ -9,22 +9,24 @@ import * as events from './events';
 let MAP: Map | null = null;
 
 export interface MapState {
+  mapInitialized: boolean;
   latitude: number;
   longitude: number;
   zoom: number;
   models: MapModel[];
 }
 
-const initialState: MapState = {
+const initialState = (): MapState => ({
+  mapInitialized: false,
   latitude: 0,
   longitude: 0,
   zoom: 10,
   models: []
-};
+});
 
 export const mapSlice = createSlice({
   name: 'map',
-  initialState,
+  initialState: initialState(),
   reducers: {},
   extraReducers: builder => {
     builder
@@ -48,7 +50,8 @@ export const mapSlice = createSlice({
           latitude,
           longitude,
           zoom,
-          models: []
+          models: [],
+          mapInitialized: false
         };
       })
       .addCase(actions.addModel, (state, { payload }) => {
@@ -91,6 +94,23 @@ export const mapSlice = createSlice({
           ...state,
           longitude: payload.lng,
           latitude: payload.lat
+        };
+      })
+      .addCase(actions.clear, state => {
+        if (!MAP) {
+          return;
+        }
+
+        state.models.forEach(m => MAP!.removeLayer(m.id));
+        return {
+          ...state,
+          models: []
+        };
+      })
+      .addCase(actions.initializeMapSuccess, state => {
+        return {
+          ...state,
+          mapInitialized: true
         };
       });
   }

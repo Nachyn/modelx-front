@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import * as mapActions from '../map/actions';
 import { combineEpics, ofType } from 'redux-observable';
 import { catchError, concatMap, EMPTY, switchMap, tap } from 'rxjs';
 import { RegisterInfo } from './models/register-info';
@@ -53,9 +54,20 @@ const loginSuccessEpic$: PayloadEpic<AuthInfo> = actions$ =>
     concatMap(() => EMPTY)
   );
 
+const logoutEpic$: SimpleEpic = actions$ =>
+  actions$.pipe(
+    ofType(actions.logout),
+    tap(() => {
+      LocalStorageService.removeItem(LocalStorageKeys.Token);
+      history.push(PageRoutes.login);
+    }),
+    map(() => mapActions.clear())
+  );
+
 export const userEpics = combineEpics<any>(
   registerEpic$,
   registerSuccessEpic$,
   loginEpic$,
-  loginSuccessEpic$
+  loginSuccessEpic$,
+  logoutEpic$
 );

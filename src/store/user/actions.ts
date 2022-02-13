@@ -17,3 +17,5 @@ export const registerFailure = createPayloadAction<any>('registerFailure');
 export const login = createPayloadAction<LoginInfo>('login');
 export const loginSuccess = createPayloadAction<AuthInfo>('loginSuccess');
 export const loginFailure = createPayloadAction<any>('loginFailure');
+
+export const logout = createAction('logout');

@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ZIndex } from '../../consts/z-index';
 import { Divider, List } from 'antd';
 import * as mapSelectors from '../../../store/map/selectors';
 import * as mapActions from '../../../store/map/actions';
+import * as userActions from '../../../store/user/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
 import { Models } from './components/Models/Models.';
 import { MapModel } from '../../../store/map/models/map-model';
-import { CodeOutlined, CompressOutlined } from '@ant-design/icons';
+import {
+  CodeOutlined,
+  CompressOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
 import { media } from '../../../style/media-query';
 
 export function Lobby() {
   const dispatch = useDispatch();
+
+  const mapInitialized = useSelector(mapSelectors.selectMapInitialized);
+  useEffect(() => {
+    if (mapInitialized) {
+      dispatch(mapActions.loadModels());
+    }
+  }, [mapInitialized]);
 
   const [isOpen, setIsOpen] = useState(true);
   const zoom = useSelector(mapSelectors.selectZoom);
@@ -59,9 +71,14 @@ export function Lobby() {
       <Models onDelete={setDeleteModel} />
     </LobbyComponent>
   ) : (
-    <HiddenLobbyComponent onClick={() => setIsOpen(true)}>
-      <CodeOutlined />
-    </HiddenLobbyComponent>
+    <>
+      <HiddenLobbyComponent onClick={() => setIsOpen(true)}>
+        <CodeOutlined />
+      </HiddenLobbyComponent>
+      <Logout onClick={() => dispatch(userActions.logout())}>
+        <LogoutOutlined />
+      </Logout>
+    </>
   );
 }
 
@@ -113,4 +130,9 @@ const HideIcon = styled(CompressOutlined)`
 const HideButton = styled.div`
   cursor: pointer;
   font-weight: 500;
+`;
+
+const Logout = styled(HiddenLobbyComponent)`
+  top: 70px;
+  border-radius: 50%;
 `;

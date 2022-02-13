@@ -41,3 +41,5 @@ export const uploadModelSuccess =
   createPayloadAction<{ newModelId: number }>('uploadModelSuccess');
 export const uploadModelFailure =
   createPayloadAction<any>('uploadModelFailure');
+
+export const clear = createAction('clear');

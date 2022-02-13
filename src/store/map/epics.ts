@@ -25,12 +25,6 @@ const loadModelsEpic$: SimpleEpic = actions$ =>
     )
   );
 
-const initializeMapEpic$: SimpleEpic = actions$ =>
-  actions$.pipe(
-    ofType(actions.initializeMapSuccess),
-    map(() => actions.loadModels())
-  );
-
 const setZoomEpic$: PayloadEpic<number> = actions$ =>
   actions$.pipe(
     ofType(actions.setZoom.type),
@@ -119,7 +113,6 @@ const uploadModelSuccessNotificationEpic$: SimpleEpic = actions$ =>
 
 export const mapEpics = combineEpics(
   loadModelsEpic$,
-  initializeMapEpic$,
   setZoomEpic$,
   // @ts-ignore
   uploadModelEpic$,

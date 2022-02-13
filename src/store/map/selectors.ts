@@ -14,3 +14,8 @@ export const selectLngLat = createSelector(selectState, state => ({
 export const selectZoom = createSelector(selectState, state => state.zoom);
 
 export const selectModels = createSelector(selectState, state => state.models);
+
+export const selectMapInitialized = createSelector(
+  selectState,
+  state => state.mapInitialized
+);
