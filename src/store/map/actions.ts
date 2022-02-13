@@ -21,6 +21,11 @@ export const loadModelsFailure = createPayloadAction<any>('loadModelsFailure');
 
 export const addModel = createPayloadAction<MapModel>('addModel');
 
+export const deleteModel = createPayloadAction<{
+  id: string;
+}>('deleteModel');
+export const deleteModelFailure =
+  createPayloadAction<any>('deleteModelFailure');
 export const removeModel = createPayloadAction<{
   id: string;
 }>('removeModel');

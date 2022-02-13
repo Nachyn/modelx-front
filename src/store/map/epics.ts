@@ -1,10 +1,18 @@
 import { combineEpics, ofType } from 'redux-observable';
 import * as actions from './actions';
-import { catchError, concatMap, debounceTime, switchMap } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  EMPTY,
+  switchMap,
+  tap
+} from 'rxjs';
 import { ModelService } from '../../app/services/model-service/model-service';
 import { map } from 'rxjs/operators';
 import { PayloadEpic, SimpleEpic, StatePayloadEpic } from '../helpers';
 import { RootState } from '../store';
+import { notification } from 'antd';
 
 const loadModelsEpic$: SimpleEpic = actions$ =>
   actions$.pipe(
@@ -68,11 +76,55 @@ const uploadModelSuccessEpic$: PayloadEpic<{ newModelId: number }> = actions$ =>
     )
   );
 
+const deleteModelEpic$: PayloadEpic<{ id: string }> = actions$ =>
+  actions$.pipe(
+    ofType(actions.deleteModel.type),
+    switchMap(({ payload }) =>
+      ModelService.deleteModel(parseInt(payload.id)).pipe(
+        map(deleted => {
+          const deletedId = deleted.ids[0];
+          if (deletedId) {
+            return actions.removeModel({ id: deletedId });
+          }
+          return EMPTY;
+        }),
+        catchError(error => [actions.deleteModelFailure(error)])
+      )
+    )
+  );
+
+const removeModelNotificationEpic$: SimpleEpic = actions$ =>
+  actions$.pipe(
+    ofType(actions.removeModel.type),
+    tap(() => {
+      notification.success({
+        message: 'Success',
+        description: 'Model deleted'
+      });
+    }),
+    concatMap(() => EMPTY)
+  );
+
+const uploadModelSuccessNotificationEpic$: SimpleEpic = actions$ =>
+  actions$.pipe(
+    ofType(actions.uploadModelSuccess.type),
+    tap(() => {
+      notification.success({
+        message: 'Success',
+        description: 'The model has been loaded'
+      });
+    }),
+    concatMap(() => EMPTY)
+  );
+
 export const mapEpics = combineEpics(
   loadModelsEpic$,
   initializeMapEpic$,
   setZoomEpic$,
   // @ts-ignore
   uploadModelEpic$,
-  uploadModelSuccessEpic$
+  uploadModelSuccessEpic$,
+  deleteModelEpic$,
+  removeModelNotificationEpic$,
+  uploadModelSuccessNotificationEpic$
 );

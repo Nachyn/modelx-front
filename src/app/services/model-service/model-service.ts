@@ -4,6 +4,7 @@ import { HttpService } from '../http-service/http-service';
 import { map } from 'rxjs/operators';
 import { PutMapModel } from './models/put-map-model';
 import mime from 'mime';
+import { IdsModel } from '../../models/ids-model';
 
 class ModelServiceImpl {
   getModels(): Observable<MapModel[]> {
@@ -29,6 +30,10 @@ class ModelServiceImpl {
 
   putModels(model: PutMapModel): Observable<void> {
     return HttpService.put('models', model);
+  }
+
+  deleteModel(id: number): Observable<IdsModel<string>> {
+    return HttpService.delete<IdsModel<string>>('models', { ids: [id] });
   }
 }
 
